@@ -16,5 +16,8 @@ data class LoginResponse(
 interface LoginService {
     @POST("login")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
+
+    @POST("register")
+    fun register(@Body request: LoginRequest): Call<LoginResponse>
 }
 

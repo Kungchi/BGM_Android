@@ -1,6 +1,7 @@
 package com.daeguuniv.bgm_android
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,6 +22,7 @@ import java.util.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
+    private lateinit var registerButton: Button
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginService: LoginService
@@ -32,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         usernameEditText = findViewById(R.id.username)
         passwordEditText = findViewById(R.id.password)
         loginButton = findViewById(R.id.loginButton)
+        registerButton = findViewById(R.id.resgisterButton)
 
         val serverUrl = getString(R.string.server_url)
 
@@ -45,6 +48,10 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             performLogin()
+        }
+
+        registerButton.setOnClickListener {  // 리스너 추가
+            performRegistration()
         }
     }
 
@@ -61,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
                     response: Response<LoginResponse>
                 ) {
                     val statusCode = response.code()
-                    Log.d("STATUS_CODE", "Code: $statusCode")
                     if (response.isSuccessful) {
                         val loginResponse = response.body()
                         Toast.makeText(
@@ -69,6 +75,8 @@ class LoginActivity : AppCompatActivity() {
                             loginResponse?.message,
                             Toast.LENGTH_SHORT
                         ).show()
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
                     } else {
                         Toast.makeText(this@LoginActivity, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
@@ -77,7 +85,6 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-                    Log.d("error", "${t.message}")
                 }
 
             })
@@ -86,4 +93,39 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, "사용자명과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun performRegistration() {  // 회원가입 기능 추가
+        val username = usernameEditText.text.toString()
+        val password = passwordEditText.text.toString()
+
+        if (username.isNotEmpty() && password.isNotEmpty()) {
+            val request = LoginRequest(username, password)
+            loginService.register(request).enqueue(object : Callback<LoginResponse> {
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+                    val statusCode = response.code()
+                    if (response.isSuccessful) {
+                        val registerResponse = response.body()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            registerResponse?.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(this@LoginActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(this@LoginActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.d("error", "${t.message}")
+                }
+            })
+        } else {
+            Toast.makeText(this, "사용자명과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
+
