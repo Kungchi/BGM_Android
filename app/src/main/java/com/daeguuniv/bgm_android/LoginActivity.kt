@@ -1,31 +1,25 @@
 package com.daeguuniv.bgm_android
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
-import java.util.*
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var registerButton: Button
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
-    private lateinit var loginService: LoginService
+    private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,19 +32,31 @@ class LoginActivity : AppCompatActivity() {
 
         val serverUrl = getString(R.string.server_url)
 
+        if (serverUrl != null) {
+            try {
+                Log.d("LoginActivity", "Initializing Retrofit with server URL: $serverUrl")
+                val retrofit = Retrofit.Builder()
+                    .baseUrl(serverUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(serverUrl) // 실제 API의 기본 URL을 입력해야 합니다.
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                apiService = retrofit.create(ApiService::class.java)
 
-        loginService = retrofit.create(LoginService::class.java)
+                Log.d("LoginActivity", "Retrofit initialized successfully")
+            } catch (e: Exception) {
+                Log.e("LoginActivity", "Error occurred during Retrofit initialization: ", e)
+                throw e
+            }
+        } else {
+            Log.e("LoginActivity", "Server url is null.")
+        }
+
 
         loginButton.setOnClickListener {
             performLogin()
         }
 
-        registerButton.setOnClickListener {  // 리스너 추가
+        registerButton.setOnClickListener {
             performRegistration()
         }
     }
@@ -60,72 +66,63 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString()
 
         if (username.isNotEmpty() && password.isNotEmpty()) {
-            // 로그인 요청에 대한 코드를 작성합니다.
             val request = LoginRequest(username, password)
-            loginService.login(request).enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    val statusCode = response.code()
-                    if (response.isSuccessful) {
-                        val loginResponse = response.body()
-                        Toast.makeText(
-                            this@LoginActivity,
-                            loginResponse?.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this@LoginActivity, "로그인 실패", Toast.LENGTH_SHORT).show()
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = apiService.login(request)
+                    withContext(Dispatchers.Main) {
+                        if (response != null) {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                response.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this@LoginActivity, "Login failed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@LoginActivity, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
-
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-
-            })
-
+            }
         } else {
-            Toast.makeText(this, "사용자명과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter username and password.", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun performRegistration() {  // 회원가입 기능 추가
+    private fun performRegistration() {
         val username = usernameEditText.text.toString()
         val password = passwordEditText.text.toString()
 
         if (username.isNotEmpty() && password.isNotEmpty()) {
             val request = LoginRequest(username, password)
-            loginService.register(request).enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    val statusCode = response.code()
-                    if (response.isSuccessful) {
-                        val registerResponse = response.body()
-                        Toast.makeText(
-                            this@LoginActivity,
-                            registerResponse?.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(this@LoginActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = apiService.register(request)
+                    withContext(Dispatchers.Main) {
+                        if (response != null) {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                response.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(this@LoginActivity, "Registration failed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@LoginActivity, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Log.d("error", "${e.message}")
                     }
                 }
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-                    Log.d("error", "${t.message}")
-                }
-            })
+            }
         } else {
-            Toast.makeText(this, "사용자명과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter username and password.", Toast.LENGTH_SHORT).show()
         }
     }
 }
-
