@@ -72,6 +72,12 @@ class LoginActivity : AppCompatActivity() {
                     val response = apiService.login(request)
                     withContext(Dispatchers.Main) {
                         if (response != null) {
+                            // Save the JWT to SharedPreferences
+                            val sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putString("JWT", response.token)
+                            editor.apply()
+
                             Toast.makeText(
                                 this@LoginActivity,
                                 response.message,

@@ -9,8 +9,10 @@ data class LoginRequest(
 )
 
 data class LoginResponse(
-    val message: String
+    val message: String,
+    val token: String // Add this
 )
+
 
 data class Music(
     val rank: Int,
@@ -26,6 +28,9 @@ interface ApiService {
     @POST("register")
     suspend fun register(@Body request: LoginRequest): LoginResponse
 
-    @GET("music")
+    @GET("Merge")
     suspend fun getMusicList(): List<Music>
+
+    @GET("PlayList")
+    suspend fun getPlayList() : List<Music>
 }
