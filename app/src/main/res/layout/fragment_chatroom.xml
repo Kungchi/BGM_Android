@@ -2,7 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,16 +11,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_Ballade"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ballade" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_Ballade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
     <LinearLayout
@@ -28,16 +31,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_Dance"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dance" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_Dance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,16 +51,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_Folk"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Folk" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_Folk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,16 +71,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_HipHop"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="HipHop" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_HipHop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,16 +91,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_Indie"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Indie" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_Indie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
     <LinearLayout
@@ -100,16 +111,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_RB"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="RB" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_RB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
     <LinearLayout
@@ -118,16 +131,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_Rock"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rock" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_Rock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
     <LinearLayout
@@ -136,16 +151,18 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
-            android:layout_width="337dp"
+        <TextView
+            android:id="@+id/tv_Trot"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trot" />
 
-        <TextView
+        <Button
+            android:id="@+id/btn_Trot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number 1" />
-
+            android:onClick="onGenre1Click"
+            android:text="입장" />
     </LinearLayout>
 
 </LinearLayout>

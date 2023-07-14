@@ -1,6 +1,4 @@
 package com.daeguuniv.bgm_android
-
-import retrofit2.Call
 import retrofit2.http.*
 
 data class LoginRequest(

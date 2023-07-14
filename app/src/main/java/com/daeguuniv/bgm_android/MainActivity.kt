@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                     // search 메뉴를 클릭했을 때 수행할 동작을 여기에 적습니다.
                 }
                 R.id.nav_chat -> {
-                    // chat 메뉴를 클릭했을 때 수행할 동작을 여기에 적습니다.
+                    replaceFragment(ChatroomFragment())
                 }
             }
             true

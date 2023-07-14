@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
                             val sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
                             val editor = sharedPreferences.edit()
                             editor.putString("JWT", response.token)
+                            editor.putString("Username", username)
                             editor.apply()
 
                             Toast.makeText(
