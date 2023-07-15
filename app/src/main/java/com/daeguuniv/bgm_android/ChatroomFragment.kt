@@ -31,37 +31,51 @@ class ChatroomFragment : Fragment(){
 
         val btnDance = view.findViewById<Button>(R.id.btn_Dance)
         btnDance.setOnClickListener {
-            Toast.makeText(requireContext(), "댄스 버튼을 눌렀음", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("roomName", "Dance") // Add the room name to the intent's extras
+            startActivity(intent)
         }
 
         val btnFolk = view.findViewById<Button>(R.id.btn_Folk)
         btnFolk.setOnClickListener {
-            Toast.makeText(requireContext(), "포크 버튼을 눌렀음", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("roomName", "Folk") // Add the room name to the intent's extras
+            startActivity(intent)
         }
 
         val btnHiphop = view.findViewById<Button>(R.id.btn_HipHop)
         btnHiphop.setOnClickListener {
-            Toast.makeText(requireContext(), "힙합 버튼을 눌렀음", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("roomName", "HipHop") // Add the room name to the intent's extras
+            startActivity(intent)
         }
 
         val btnIndie = view.findViewById<Button>(R.id.btn_Indie)
         btnIndie.setOnClickListener {
-            Toast.makeText(requireContext(), "인디 버튼을 눌렀음", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("roomName", "Indie") // Add the room name to the intent's extras
+            startActivity(intent)
         }
 
         val btnRB = view.findViewById<Button>(R.id.btn_RB)
         btnRB.setOnClickListener {
-            Toast.makeText(requireContext(), "알앤비 버튼을 눌렀음", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("roomName", "RB") // Add the room name to the intent's extras
+            startActivity(intent)
         }
 
         val btnRock = view.findViewById<Button>(R.id.btn_Rock)
         btnRock.setOnClickListener {
-            Toast.makeText(requireContext(), "락 버튼을 눌렀음", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("roomName", "Rock") // Add the room name to the intent's extras
+            startActivity(intent)
         }
 
         val btnTrot = view.findViewById<Button>(R.id.btn_Trot)
         btnTrot.setOnClickListener {
-            Toast.makeText(requireContext(), "트로트 버튼을 눌렀음", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("roomName", "Trot") // Add the room name to the intent's extras
+            startActivity(intent)
         }
 
     }

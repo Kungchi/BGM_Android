@@ -1,5 +1,6 @@
 package com.daeguuniv.bgm_android
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -13,6 +14,7 @@ import org.json.JSONObject
 class ChatActivity : AppCompatActivity() {
     private lateinit var socket: Socket
     private lateinit var messagesAdapter: MessagesAdapter
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +32,7 @@ class ChatActivity : AppCompatActivity() {
         val opts = IO.Options()
         opts.forceNew = true
         opts.reconnection = true
-        socket = IO.socket("http://3.38.89.76:5000", opts)
+        socket = IO.socket("http://43.201.248.9:5000", opts)
 
         // Connect to the server
         socket.connect()
@@ -50,7 +52,7 @@ class ChatActivity : AppCompatActivity() {
             val data = args[0] as JSONObject
             val messageContent = data.getString("msg")
             // Create a Message object
-            val message = Message(content = messageContent, sender = username, timestamp = System.currentTimeMillis())
+            val message = Message(content = messageContent, sender = "", timestamp = System.currentTimeMillis())
             runOnUiThread {
                 // Add the message to the adapter and scroll to the bottom
                 messagesAdapter.addMessage(message)
@@ -63,7 +65,15 @@ class ChatActivity : AppCompatActivity() {
             val message = etMessage.text.toString()
             etMessage.text.clear()
 
-            socket.emit("message", JSONObject().put("msg", message).put("room", roomName))
+            val fullMessage = "$username: $message"
+            socket.emit("message", JSONObject().put("msg", fullMessage).put("room", roomName))
+        }
+
+        // Initialize MediaPlayer and start buffering audio in the background
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource("http://43.201.248.9:8000/Dance.mp3") // replace with your audio file url
+            setOnPreparedListener { start() }
+            prepareAsync() // start buffering in the background
         }
     }
 
@@ -72,5 +82,8 @@ class ChatActivity : AppCompatActivity() {
 
         // Disconnect from the server when the activity is destroyed
         socket.disconnect()
+
+        // Release MediaPlayer when the activity is destroyed
+        mediaPlayer.release()
     }
 }
