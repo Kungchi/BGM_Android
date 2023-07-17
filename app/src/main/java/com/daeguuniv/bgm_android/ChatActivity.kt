@@ -28,11 +28,12 @@ class ChatActivity : AppCompatActivity() {
         rvMessages.adapter = messagesAdapter
         rvMessages.layoutManager = LinearLayoutManager(this)
 
+        val serverUrl = getString(R.string.server_url)
         // Initialize the Socket.IO client
         val opts = IO.Options()
         opts.forceNew = true
         opts.reconnection = true
-        socket = IO.socket("http://43.201.248.9:5000", opts)
+        socket = IO.socket(serverUrl + ":5000", opts)
 
         // Connect to the server
         socket.connect()
@@ -71,7 +72,7 @@ class ChatActivity : AppCompatActivity() {
 
         // Initialize MediaPlayer and start buffering audio in the background
         mediaPlayer = MediaPlayer().apply {
-            setDataSource("http://43.201.248.9:8000/Dance.mp3") // replace with your audio file url
+            setDataSource(serverUrl + ":8000/" + roomName + ".mp3") // replace with your audio file url
             setOnPreparedListener { start() }
             prepareAsync() // start buffering in the background
         }
@@ -80,10 +81,21 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
+        // Get the room name from the intent's extras
+        val roomName = intent.getStringExtra("roomName") ?: "Default Room"
+
+        // Get the username from SharedPreferences
+        val sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+        val username = sharedPreferences.getString("Username", "Default User") ?: "Default User"
+
+        // Emit "leave" event
+        socket.emit("leave", JSONObject().put("userName", username).put("room", roomName))
+
         // Disconnect from the server when the activity is destroyed
         socket.disconnect()
 
         // Release MediaPlayer when the activity is destroyed
         mediaPlayer.release()
     }
+
 }

@@ -29,7 +29,7 @@ class PlayListFragment : Fragment(){
         recyclerView = view.findViewById(R.id.music_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        val serverUrl = getString(R.string.server_url)
+        val serverUrl = getString(R.string.server_url) + ":3000"
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor { chain ->

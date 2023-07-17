@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.loginButton)
         registerButton = findViewById(R.id.resgisterButton)
 
-        val serverUrl = getString(R.string.server_url)
+        val serverUrl = getString(R.string.server_url) + ":3000"
 
         if (serverUrl != null) {
             try {
