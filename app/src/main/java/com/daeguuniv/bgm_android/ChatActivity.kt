@@ -18,7 +18,7 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.test)
+        setContentView(R.layout.activity_chat)
 
         val rvMessages = findViewById<RecyclerView>(R.id.rvMessages)
         val etMessage = findViewById<EditText>(R.id.etMessage)

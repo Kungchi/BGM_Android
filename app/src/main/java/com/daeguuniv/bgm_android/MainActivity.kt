@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(PlayListFragment())
                 }
                 R.id.nav_search -> {
-                    // search 메뉴를 클릭했을 때 수행할 동작을 여기에 적습니다.
+                    replaceFragment(SearchFragment())
                 }
                 R.id.nav_chat -> {
                     replaceFragment(ChatroomFragment())

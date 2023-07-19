@@ -11,9 +11,12 @@ data class LoginResponse(
     val token: String // Add this
 )
 
-
+data class CrawlRequest(
+    val keyword: String,
+    val page: Int
+)
 data class Music(
-    val rank: Int,
+    val rank: Int? = null,
     val imgurl: String,
     val title: String,
     val singer: String
@@ -22,13 +25,12 @@ data class Music(
 interface ApiService {
     @POST("login")
     suspend fun login(@Body request: LoginRequest): LoginResponse
-
     @POST("register")
     suspend fun register(@Body request: LoginRequest): LoginResponse
-
+    @POST("crawl")
+    suspend fun crawling(@Body request: CrawlRequest): List<Music>
     @GET("Merge")
     suspend fun getMusicList(): List<Music>
-
     @GET("PlayList")
     suspend fun getPlayList() : List<Music>
 }
