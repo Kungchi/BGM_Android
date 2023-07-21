@@ -56,7 +56,7 @@ class PlayListFragment : Fragment(){
 
         CoroutineScope(Dispatchers.IO).launch {
             val musicList = apiService.getPlayList()
-            musicAdapter = MusicAdapter(musicList)
+            musicAdapter = MusicAdapter(musicList.toMutableList())
             withContext(Dispatchers.Main) {
                 recyclerView.adapter = musicAdapter
             }

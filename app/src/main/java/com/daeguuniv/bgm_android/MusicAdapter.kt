@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class MusicAdapter(private val musicList: List<Music>) :
+class MusicAdapter(private var musicList: MutableList<Music>) :
     RecyclerView.Adapter<MusicAdapter.MusicViewHolder>() {
 
     inner class MusicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,4 +31,9 @@ class MusicAdapter(private val musicList: List<Music>) :
     }
 
     override fun getItemCount() = musicList.size
+
+    fun addData(newData: List<Music>) {
+        musicList.addAll(newData)
+    }
 }
+
